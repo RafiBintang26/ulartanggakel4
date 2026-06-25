@@ -1,0 +1,361 @@
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #f39c12;
+    --bg-color: #2c3e50;
+    --text-color: #ecf0f1;
+    --board-bg: #34495e;
+    --cell-border: #2c3e50;
+    
+    /* Player Colors */
+    --p1-color: #2ecc71; /* Green */
+    --p2-color: #f1c40f; /* Yellow */
+    --p3-color: #e74c3c; /* Red */
+    --p4-color: #3498db; /* Blue */
+
+    --p1-shadow: #27ae60;
+    --p2-shadow: #f39c12;
+    --p3-shadow: #c0392b;
+    --p4-shadow: #2980b9;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    background-image: radial-gradient(#3b5998 1px, transparent 1px);
+    background-size: 20px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+h1, h2, h3 {
+    font-family: 'Fredoka One', cursive;
+}
+
+/* Modals */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: #fff;
+    color: #333;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    animation: popIn 0.3s ease-out;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.modal-content.math-theme {
+    background: #f9f9f9;
+    border: 5px solid var(--primary-color);
+}
+
+.setup-group {
+    margin: 1.5rem 0;
+}
+
+select, input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.player-input-row {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.color-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.2s;
+    font-family: inherit;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+.btn.primary {
+    background: var(--primary-color);
+    color: white;
+}
+.btn.primary:hover {
+    background: #357abd;
+}
+
+.btn.danger {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn.action {
+    background: var(--secondary-color);
+    color: white;
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Game UI */
+#game-ui {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1000px;
+    padding: 20px;
+}
+
+#game-ui.hidden {
+    display: none !important;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.game-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.board-wrapper {
+    flex: 2;
+    min-width: 300px;
+    background: #ecf0f1;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border: 2px solid var(--cell-border);
+    position: relative;
+    background-color: var(--board-bg);
+}
+
+.cell {
+    border: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.2vw;
+    color: rgba(255,255,255,0.7);
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Striped pattern for math board look */
+.cell:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+.cell:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Side Panel */
+.side-panel {
+    flex: 1;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.panel-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.highlight-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+.players-card ul {
+    list-style: none;
+    margin-top: 10px;
+}
+
+.players-card li {
+    padding: 8px;
+    margin-bottom: 5px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+}
+
+.players-card li.active-player {
+    border: 2px solid white;
+    background: rgba(255,255,255,0.2);
+}
+
+/* Tokens */
+.token {
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.4), inset 0 -4px 4px rgba(0,0,0,0.2);
+    border: 2px solid rgba(255,255,255,0.5);
+}
+
+.token-1 { background-color: var(--p1-color); }
+.token-2 { background-color: var(--p2-color); }
+.token-3 { background-color: var(--p3-color); }
+.token-4 { background-color: var(--p4-color); }
+
+/* Multiple tokens in one cell */
+.cell .token:nth-child(2) { transform: translate(-20%, -20%); }
+.cell .token:nth-child(3) { transform: translate(20%, -20%); }
+.cell .token:nth-child(4) { transform: translate(-20%, 20%); }
+.cell .token:nth-child(5) { transform: translate(20%, 20%); }
+
+/* Dice */
+.dice-card {
+    text-align: center;
+}
+
+.dice {
+    width: 80px;
+    height: 80px;
+    background: white;
+    border-radius: 15px;
+    margin: 0 auto 15px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    padding: 10px;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.dice.rolling {
+    animation: roll 0.5s infinite linear;
+}
+
+@keyframes roll {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.1); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+.dot {
+    width: 15px;
+    height: 15px;
+    background: #333;
+    border-radius: 50%;
+    justify-self: center;
+    align-self: center;
+}
+
+.result-text {
+    margin-top: 10px;
+    font-weight: bold;
+    min-height: 24px;
+}
+
+/* Math Modal styling */
+.question-text {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 15px 0;
+    font-family: 'Fredoka One', cursive;
+}
+.feedback-text {
+    font-weight: bold;
+    margin: 10px 0;
+    min-height: 20px;
+}
+.feedback-text.error { color: #e74c3c; }
+.feedback-text.success { color: #2ecc71; }
+.attempts-text {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 15px;
+}
+
+/* Snakes & Ladders Styling (SVG Overlays) */
+.svg-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Let clicks pass through to board */
+    z-index: 5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    .cell {
+        font-size: 3vw;
+    }
+}
